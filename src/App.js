@@ -8,10 +8,12 @@ class App extends React.Component {
   // CONSTRUCTOR
   // RENDER
   // COMPONENTDIDMOUNT
-  // UPDATES (yet to see)
+  // COMPONENTDIDUPDATE
+  // COMPONENTWILLUNMOUNT
 
   state = {
     movieTitle: 'Batman Forever',
+    showMovie: true,
   }
 
   // every render method invocation is bound to a change in props or state
@@ -29,7 +31,12 @@ class App extends React.Component {
               <Col md={{ span: 6, offset: 3 }}>
                 <Form>
                   <Form.Group>
-                    <Form.Label htmlFor="movieSelect">Choose a movie</Form.Label>
+                    <Form.Label
+                      htmlFor="movieSelect"
+                      onClick={() => this.setState({ showMovie: !this.state.showMovie })}
+                    >
+                      Choose a movie
+                    </Form.Label>
                     <Form.Control
                       name="movieSelect"
                       as="select"
@@ -41,7 +48,7 @@ class App extends React.Component {
                     </Form.Control>
                   </Form.Group>
                 </Form>
-                <Movie movieTitle={this.state.movieTitle} />
+                {this.state.showMovie && <Movie movieTitle={this.state.movieTitle} />}
               </Col>
             </Row>
           </Container>

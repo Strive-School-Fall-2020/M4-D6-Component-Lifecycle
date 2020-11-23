@@ -10,6 +10,15 @@ class Movie extends React.Component {
     componentDidMount = async () => {
         console.log('Movie has finished mounting')
         // this.props.movieTitle is the movie upon loading
+        this.fetchMovie()
+    }
+
+    componentWillUnmount = () => {
+        console.log('Movie is about to get unmounted!')
+    }
+
+    fetchMovie = async () => {
+        this.setState({ loading: true })
         try {
             let response = await fetch("http://www.omdbapi.com/?apikey=24ad60e9&s=" + this.props.movieTitle)
             if (response.ok) {
@@ -26,7 +35,24 @@ class Movie extends React.Component {
             console.log(e)
             this.setState({ loading: false })
         }
+    }
 
+    componentDidUpdate = (previousProps) => {
+        console.log('just entered componentDidUpdate')
+        // gets fired every time there's a change in the props or the state of Movie.jsx
+        // so every time the component is re-rendering!
+        // console.log('Movie component has updated!', this.props.movieTitle)
+        // console.log(previousProps)
+        // let's do the fetch again here!
+        console.log('PREVIOUS MOVIE', previousProps.movieTitle)
+        console.log('CURRENT MOVIE', this.props.movieTitle)
+        if (previousProps.movieTitle !== this.props.movieTitle) { // it means we selected a new movie in the dropdown
+            // it means also there was a change in the PROPS and not in the state
+            // because we gave the component new props changing the movie in the dropdown
+            console.log('PREVIOUS MOVIE IS DIFFERENT FROM CURRENT MOVIE')
+            console.log('PERFORMING THE FETCH!')
+            this.fetchMovie()
+        }
     }
 
     render() {
